@@ -1,0 +1,283 @@
+/*
+ * Clean, modern, and maintainable CSS for Tube Cycling Challenge UI
+ * - Uses CSS variables for colors and spacing
+ * - Groups related styles
+ * - Removes redundant and unused rules
+ * - All layout handled in CSS, not inline
+ */
+:root {
+    --primary-blue: #0019a8;
+    --accent-red: #e32017;
+    --accent-yellow: #ffd300;
+    --accent-green: #00782a;
+    --accent-cyan: #0098d4;
+    --gray-bg: #e5e5e5;
+    --gray-dark: #444;
+    --header-padding: 2em 0 1em 0;
+    --road-height: 180px;
+    --container-max-width: 1600px;
+    --card-radius: 16px;
+    --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, var(--gray-bg) 60%, #b3e0ff 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+body.has-content {
+    padding-bottom: 0;
+}
+body.has-content.table-view-active {
+    padding-bottom: 60px;
+}
+header.tfl-header {
+    background: var(--primary-blue);
+    color: #fff;
+    padding: var(--header-padding);
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+.tfl-header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.tfl-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+}
+main {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 2em;
+}
+#cycle-image-container {
+    text-align: center;
+    margin: 2em auto 2em auto;
+    position: relative;
+    z-index: 1;
+}
+.cycle-image {
+    width: 280px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+#login {
+    margin: 3em auto 2em auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#login[hidden] { display: none !important; }
+#login button {
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 1em 2.5em;
+    font-size: 1.2em;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+#login button:hover {
+    background: #b91d1c;
+}
+.cycle-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 0.3em;
+}
+#loader {
+    text-align: center;
+    font-size: 1.1em;
+    color: var(--primary-blue);
+    margin: 2em 0;
+}
+.view-toggle {
+    text-align: center;
+    margin: 1em 0;
+}
+#toggle-table-view {
+    background: var(--accent-cyan);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.7em 2em;
+    font-size: 1em;
+    cursor: pointer;
+}
+#activities,
+#table-view {
+    margin-top: 2em !important;
+}
+#activities {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2em;
+    max-width: var(--container-max-width);
+    margin: 2em auto;
+    align-items: stretch;
+    position: relative;
+    z-index: 5;
+}
+#activities[data-has-road="true"] {
+    margin-bottom: var(--road-height);
+}
+.activity {
+    background: #fff;
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    padding: 1.5em 1.2em 1.2em 1.2em;
+    transition: box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    min-height: 120px;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0 1.5em;
+}
+.activity:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+}
+.activity strong {
+    font-size: 1.1em;
+    margin-bottom: 0.3em;
+    display: block;
+}
+.activity em {
+    color: #888;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    display: block;
+}
+.activity .description {
+    margin: 0.5em 0 1em 0;
+    color: #444;
+    font-size: 1em;
+}
+.activity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    font-size: 0.98em;
+    margin-top: auto;
+}
+.activity .activity-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--accent-green);
+    background: #eaf7ed;
+    border-radius: 6px;
+    padding: 0.2em 0.7em;
+    font-weight: 500;
+}
+.activity .activity-meta span.time {
+    color: #b36305;
+    background: #fff6e5;
+}
+.activity .activity-meta span.distance {
+    color: var(--accent-cyan);
+    background: #e6f6fb;
+}
+#table-view {
+    margin-bottom: 2em;
+    padding-bottom: 0;
+    max-width: 1200px;
+    position: relative;
+    z-index: 5;
+}
+#table-view[hidden] { display: none !important; }
+#table-view table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin: 0 auto;
+}
+#table-view table td, #table-view table th {
+    font-weight: normal;
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+#table-view table th {
+    font-weight: bold;
+}
+footer {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    margin-top: 2em;
+}
+.cycle-road-bg {
+    position: relative;
+    left: 0; right: 0;
+    bottom: 0;
+    height: var(--road-height);
+    z-index: 1;
+    pointer-events: none;
+}
+/* For login screen, fix the footer to the bottom */
+body:not(.has-content) footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+}
+.cycle-road {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: var(--road-height);
+    background: linear-gradient(to top, var(--gray-dark) 80%, transparent 100%);
+    z-index: 1;
+}
+.cycle-road-markings {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80vw;
+    max-width: 600px;
+    height: 100px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 6;
+    pointer-events: none;
+}
+.cycle-road-marking {
+    width: 40px;
+    height: 8px;
+    background: #fff;
+    border-radius: 4px;
+    opacity: 0.7;
+    margin: 0 12px;
+}
+@media (max-width: 900px) {
+    #activities {
+        grid-template-columns: 1fr;
+        padding: 0 1em;
+    }
+    main {
+        padding: 0 0.5em;
+    }
+}
