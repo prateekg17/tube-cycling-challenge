@@ -1,7 +1,20 @@
 # Prateek's Tube Cycling Challenge
 
 A Go web application that integrates with the Strava API to fetch, filter, and display my cycling activities for a self-made Tube challenge I am undertaking.
-As part of this Tube challenge, I'm cycling to and from all the terminus Tube stations from my home within the London Tfl underground network. There are a total of 33 Tube stations.
+
+As part of this Tube challenge, I'm cycling to and from all the terminus Tube stations from my home within the London Tfl underground network.
+There are a total of 33 such Tube stations spread across the following lines:
+- District Line
+- Piccadilly Line
+- Central Line
+- Hammersmith & City Line
+- Bakerloo Line
+- Circle Line
+- Jubilee Line
+- Victoria Line
+- Northern Line
+- Metropolitan Line
+- Waterloo & City Line
 
 The app supports user authentication via OAuth, activity caching, and parallel fetching for improved performance.
 
