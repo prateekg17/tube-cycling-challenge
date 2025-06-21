@@ -37,21 +37,51 @@ header.tfl-header {
     background: var(--primary-blue);
     color: #fff;
     padding: var(--header-padding);
-    text-align: center;
     position: relative;
     z-index: 10;
 }
 .tfl-header-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 2em;
+}
+.tfl-logos-title {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    text-align: left;
 }
 .tfl-logos {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 2em;
+    gap: 1em;
+}
+/* Login button in header */
+.header-login {
+    margin: 0;
+}
+.header-login button {
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 0.8em 1.8em;
+    font-size: 1em;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+.header-login button:hover {
+    background: #b91d1c;
 }
 main {
     max-width: var(--container-max-width);
@@ -132,13 +162,13 @@ main {
     grid-template-columns: repeat(2, 1fr);
     gap: 2em;
     max-width: var(--container-max-width);
-    margin: 2em auto;
+    margin: 2em auto 0; /* Removed bottom margin */
     align-items: stretch;
     position: relative;
     z-index: 5;
 }
 #activities[data-has-road="true"] {
-    margin-bottom: var(--road-height);
+    margin-bottom: calc(var(--road-height) - 100px); /* Reduced space from -50px to -100px */
 }
 .activity {
     background: #fff;
@@ -151,7 +181,7 @@ main {
     min-height: 120px;
     box-sizing: border-box;
     width: 100%;
-    margin: 0 0 1.5em;
+    margin: 0 0 0.5em; /* Reduced bottom margin from 1em to 0.5em */
 }
 .activity:hover {
     box-shadow: 0 4px 24px rgba(0,0,0,0.15);
@@ -224,7 +254,7 @@ footer {
     position: relative;
     width: 100%;
     z-index: 1;
-    margin-top: 2em;
+    margin-top: 0; /* Changed from 2em to 0 to reduce space */
 }
 .cycle-road-bg {
     position: relative;
