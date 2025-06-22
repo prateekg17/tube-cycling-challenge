@@ -24,7 +24,8 @@ const elements = {
   toggleBtn: document.getElementById('toggle-table-view'),
   activities: document.getElementById('activities'),
   tableView: document.getElementById('table-view'),
-  cycleImageContainer: document.getElementById('cycle-image-container')
+  cycleImageContainer: document.getElementById('cycle-image-container'),
+  viewToggle: document.querySelector('.view-toggle')
 };
 
 // Ensure the cycle image is visible by default on page load
@@ -52,14 +53,30 @@ window.addEventListener('resize', adjustActivitiesPadding);
  */
 let activitiesData = [];
 
+// Helper function to show the login view
+function showLoginView() {
+    elements.login.style.display = ''; // Use direct style manipulation
+    if (elements.cycleImageContainer) {
+        elements.cycleImageContainer.style.display = '';
+    }
+    elements.viewToggle.style.display = 'none'; // Use cached element
+}
+
+// Helper function to show the activities view
+function showActivitiesView() {
+    elements.login.style.display = 'none'; // Use direct style manipulation
+    if (elements.cycleImageContainer) {
+        elements.cycleImageContainer.style.display = 'none';
+    }
+    elements.viewToggle.style.display = 'block'; // Use cached element
+    elements.toggleBtn.style.display = '';
+}
+
 async function fetchActivities() {
     elements.loader.removeAttribute('hidden');
-    elements.login.classList.add('hidden');
-    elements.toggleBtn.classList.add('hidden');
-    document.querySelector('.view-toggle').classList.add('hidden'); // Hide the container using class
-    // To hide both views while loading
-    elements.activities.classList.add('hidden');
-    elements.tableView.classList.add('hidden');
+    elements.login.style.display = 'none'; // Hide login tile when loader is shown
+    elements.activities.style.display = 'none';
+    elements.tableView.style.display = 'none';
     elements.activities.innerHTML = '';
 
     // Remove has-content class when no content is shown
@@ -70,28 +87,24 @@ async function fetchActivities() {
         elements.loader.setAttribute('hidden', '');
 
         if (res.status === 401) {
-            elements.login.classList.remove('hidden');
-            if (elements.cycleImageContainer) elements.cycleImageContainer.classList.remove('hidden');
+            showLoginView();
             return;
         }
 
         if (!res.ok) {
-            elements.login.classList.remove('hidden');
-            if (elements.cycleImageContainer) elements.cycleImageContainer.classList.remove('hidden');
+            showLoginView();
             return;
         }
 
-        if (elements.cycleImageContainer) elements.cycleImageContainer.classList.add('hidden');
+        showActivitiesView();
+
         const activities = await res.json();
         activitiesData = activities;
 
         if (activities.length === 0) {
             elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge.</p>';
-            elements.toggleBtn.classList.add('hidden'); // Hide if no activities
-            elements.activities.classList.remove('hidden'); // Show card view if no activities
-            // Show login and image if no activities (user not logged in or no data)
-            elements.login.classList.remove('hidden');
-            if (elements.cycleImageContainer) elements.cycleImageContainer.classList.remove('hidden');
+            elements.viewToggle.style.display = 'none'; // Use cached element
+            elements.activities.style.display = 'grid'; // Show card view if no activities
             return;
         }
 
@@ -99,20 +112,18 @@ async function fetchActivities() {
         document.body.classList.add('has-content');
 
         renderCardView(activities);
-        elements.toggleBtn.classList.remove('hidden');
-        document.querySelector('.view-toggle').classList.remove('hidden'); // Show the container using class
 
         // Show the correct view after loading
         const viewMode = localStorage.getItem('viewMode');
         if (viewMode === 'table') {
-            elements.activities.classList.add('hidden');
-            elements.tableView.classList.remove('hidden');
+            elements.activities.style.display = 'none';
+            elements.tableView.style.display = 'block';
             elements.toggleBtn.textContent = TOGGLE_VIEW_LABELS.card;
             renderTableView();
             tableVisible = true;
         } else {
-            elements.activities.classList.remove('hidden');
-            elements.tableView.classList.add('hidden');
+            elements.activities.style.display = 'grid';
+            elements.tableView.style.display = 'none';
             elements.toggleBtn.textContent = TOGGLE_VIEW_LABELS.table;
             tableVisible = false;
         }
@@ -123,6 +134,7 @@ async function fetchActivities() {
         elements.loader.style.display = 'none';
         elements.activities.innerHTML = '<p>Error loading activities. Please try again later.</p>';
         elements.activities.style.display = '';
+        showLoginView();
     }
 }
 let tableSort = { column: null, asc: true };
@@ -407,13 +419,14 @@ let tableVisible = false;
 function toggleView() {
     tableVisible = !tableVisible;
 
-    // Update view visibility using CSS classes
+    // Update view visibility using direct style manipulation
     if (tableVisible) {
-        elements.activities.classList.add('hidden');
-        elements.tableView.classList.remove('hidden');
+        elements.activities.style.display = 'none';
+        elements.tableView.style.display = 'block';
+        renderTableView(); // Render the table view when switching to it
     } else {
-        elements.activities.classList.remove('hidden');
-        elements.tableView.classList.add('hidden');
+        elements.activities.style.display = 'grid';
+        elements.tableView.style.display = 'none';
     }
 
     // Update button text
@@ -421,12 +434,8 @@ function toggleView() {
 
     // Save preference to localStorage
     localStorage.setItem('viewMode', tableVisible ? 'table' : 'card');
-
-    // Render table if needed
-    if (tableVisible) {
-        renderTableView();
-    }
 }
+
 elements.toggleBtn.addEventListener('click', toggleView);
 
 // Set initial button label on page load
