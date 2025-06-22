@@ -57,7 +57,6 @@ let activitiesData = [];
 function showLoginView() {
     elements.login.style.display = ''; // Use direct style manipulation
     if (elements.cycleImageContainer) {
-        elements.cycleImageContainer.classList.remove('hidden');
         elements.cycleImageContainer.style.display = '';
     }
     elements.viewToggle.style.display = 'none'; // Use cached element
@@ -67,18 +66,17 @@ function showLoginView() {
 function showActivitiesView() {
     elements.login.style.display = 'none'; // Use direct style manipulation
     if (elements.cycleImageContainer) {
-        elements.cycleImageContainer.classList.add('hidden');
         elements.cycleImageContainer.style.display = 'none';
     }
     elements.viewToggle.style.display = 'block'; // Use cached element
-    elements.toggleBtn.classList.remove('hidden');
+    elements.toggleBtn.style.display = '';
 }
 
 async function fetchActivities() {
     elements.loader.removeAttribute('hidden');
     elements.login.style.display = 'none'; // Hide login tile when loader is shown
-    elements.activities.classList.add('hidden');
-    elements.tableView.classList.add('hidden');
+    elements.activities.style.display = 'none';
+    elements.tableView.style.display = 'none';
     elements.activities.innerHTML = '';
 
     // Remove has-content class when no content is shown
@@ -106,7 +104,7 @@ async function fetchActivities() {
         if (activities.length === 0) {
             elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge.</p>';
             elements.viewToggle.style.display = 'none'; // Use cached element
-            elements.activities.classList.remove('hidden'); // Show card view if no activities
+            elements.activities.style.display = 'grid'; // Show card view if no activities
             return;
         }
 
