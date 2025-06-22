@@ -143,6 +143,7 @@ main {
 .view-toggle {
     text-align: center;
     margin: 1em 0;
+    display: none; /* Initial state is hidden */
 }
 #toggle-table-view {
     background: var(--accent-cyan);
