@@ -14,10 +14,13 @@ const tableCellStyle = "padding:8px;border:1px solid #ccc;text-align:center;";
 const tableCellStyleLeft = "padding:8px;border:1px solid #ccc;";
 const tableCellStyleNoWrap = "padding:8px;border:1px solid #ccc;text-align:center;white-space:nowrap;";
 
+// Application constants
+const ROAD_THRESHOLD_PX = 10; // Threshold in pixels for road visibility detection
+
 // Cache DOM elements
 const elements = {
   loader: document.getElementById('loader'),
-  login: document.querySelector('.header-login'), // Updated to use header login
+  login: document.querySelector('.header-login'),
   toggleBtn: document.getElementById('toggle-table-view'),
   activities: document.getElementById('activities'),
   tableView: document.getElementById('table-view'),
@@ -36,7 +39,7 @@ function adjustActivitiesPadding() {
     const rect = elements.activities.getBoundingClientRect();
     const roadRect = road.getBoundingClientRect();
     // Only add extra padding if needed - reduce the threshold to minimize extra space
-    if (rect.bottom > roadRect.top - 10) {
+    if (rect.bottom > roadRect.top - ROAD_THRESHOLD_PX) {
         elements.activities.setAttribute('data-has-road', 'true');
     } else {
         elements.activities.removeAttribute('data-has-road');
