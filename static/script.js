@@ -24,7 +24,8 @@ const elements = {
   toggleBtn: document.getElementById('toggle-table-view'),
   activities: document.getElementById('activities'),
   tableView: document.getElementById('table-view'),
-  cycleImageContainer: document.getElementById('cycle-image-container')
+  cycleImageContainer: document.getElementById('cycle-image-container'),
+  viewToggle: document.querySelector('.view-toggle')
 };
 
 // Ensure the cycle image is visible by default on page load
@@ -59,7 +60,7 @@ function showLoginView() {
         elements.cycleImageContainer.classList.remove('hidden');
         elements.cycleImageContainer.style.display = '';
     }
-    document.querySelector('.view-toggle').style.display = 'none'; // Use direct style manipulation
+    elements.viewToggle.style.display = 'none'; // Use cached element
 }
 
 // Helper function to show the activities view
@@ -69,7 +70,7 @@ function showActivitiesView() {
         elements.cycleImageContainer.classList.add('hidden');
         elements.cycleImageContainer.style.display = 'none';
     }
-    document.querySelector('.view-toggle').style.display = 'block'; // Use direct style manipulation
+    elements.viewToggle.style.display = 'block'; // Use cached element
     elements.toggleBtn.classList.remove('hidden');
 }
 
@@ -104,7 +105,7 @@ async function fetchActivities() {
 
         if (activities.length === 0) {
             elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge.</p>';
-            document.querySelector('.view-toggle').style.display = 'none';
+            elements.viewToggle.style.display = 'none'; // Use cached element
             elements.activities.classList.remove('hidden'); // Show card view if no activities
             return;
         }
