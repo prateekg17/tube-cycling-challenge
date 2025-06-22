@@ -15,6 +15,7 @@
     --gray-dark: #444;
     --header-padding: 2em 0 1em 0;
     --road-height: 180px;
+    --road-offset: 100px; /* Offset for road visibility adjustment */
     --container-max-width: 1600px;
     --card-radius: 16px;
     --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
@@ -169,7 +170,7 @@ main {
     z-index: 5;
 }
 #activities[data-has-road="true"] {
-    margin-bottom: calc(var(--road-height) - 100px); /* Reduced space from -50px to -100px */
+    margin-bottom: calc(var(--road-height) - var(--road-offset)); /* Adjust space to ensure optimal visibility of activities with road background */
 }
 .activity {
     background: #fff;
