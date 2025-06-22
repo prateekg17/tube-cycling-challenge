@@ -86,7 +86,7 @@ async function fetchActivities() {
         activitiesData = activities;
 
         if (activities.length === 0) {
-            elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge."</p>';
+            elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge.</p>';
             elements.toggleBtn.classList.add('hidden'); // Hide if no activities
             elements.activities.classList.remove('hidden'); // Show card view if no activities
             // Show login and image if no activities (user not logged in or no data)
