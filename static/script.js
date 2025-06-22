@@ -99,6 +99,7 @@ async function fetchActivities() {
         showActivitiesView();
 
         const activities = await res.json();
+        activities.forEach(a => a._timestamp = a.start_date ? Date.parse(a.start_date) : 0);
         activitiesData = activities;
 
         if (activities.length === 0) {
@@ -163,8 +164,8 @@ function renderTableView() {
             let aVal, bVal;
             switch(tableSort.column) {
                 case 'date':
-                    aVal = new Date(a.start_date);
-                    bVal = new Date(b.start_date);
+                    aVal = a._timestamp || 0;
+                    bVal = b._timestamp || 0;
                     break;
                 case 'distance':
                     aVal = a.distance || 0;
@@ -223,16 +224,24 @@ function renderTableView() {
         return `<span style='font-size:0.9em;'>${icon}</span>`;
     };
 
+    const getSortableColumnProps = column => {
+        let ariaSort = 'none';
+        if (tableSort.column === column) {
+            ariaSort = tableSort.asc ? 'ascending' : 'descending';
+        }
+        return `role="button" aria-sort="${ariaSort}"`;
+    };
+
     const tableHeader = `
         <thead>
             <tr style="background:#e6f6fb;">
                 <th style="${tableCellStyle}">#</th>
                 <th style="${tableCellStyleLeft}">Ride Name</th>
-                <th id="sort-date" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">📅 Date ${getSortIcon('date')}</th>
-                <th id="sort-distance" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
-                <th id="sort-time" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
-                <th id="sort-speed" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
-                <th id="sort-elevation" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
+                <th id="sort-date" ${getSortableColumnProps('date')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">📅 Date ${getSortIcon('date')}</th>
+                <th id="sort-distance" ${getSortableColumnProps('distance')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
+                <th id="sort-time" ${getSortableColumnProps('time')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
+                <th id="sort-speed" ${getSortableColumnProps('speed')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
+                <th id="sort-elevation" ${getSortableColumnProps('elevation')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
             </tr>
         </thead>
     `;
