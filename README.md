@@ -61,7 +61,7 @@ The web UI displays:
   - Distance (km), Time, Average Speed (km/h), Elevation Gain (m)
 - **Tabular View**: Table with sortable columns for:
   - Ride name (linked to Strava)
-  - Distance, Time, Speed, Elevation
+  - Date, Distance, Time, Speed, Elevation
   - Totals and averages in the footer
   - **Sorting**: Click any column header to sort by that column (ascending/descending)
 - **Animated Road Markings**: Visual elements in the footer that dynamically update based on the number of activities

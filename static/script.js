@@ -99,6 +99,7 @@ async function fetchActivities() {
         showActivitiesView();
 
         const activities = await res.json();
+        activities.forEach(a => a._timestamp = a.start_date ? Date.parse(a.start_date) : 0);
         activitiesData = activities;
 
         if (activities.length === 0) {
@@ -148,7 +149,8 @@ function formatActivityMeta(a) {
         distance: a.distance ? (a.distance / 1000).toFixed(2) + ' km' : 'N/A',
         time: a.moving_time ? formatDuration(a.moving_time) : 'N/A',
         speed: a.distance && a.moving_time ? calcSpeed(a.distance, a.moving_time) + ' km/h' : 'N/A',
-        elevation: a.total_elevation_gain ? a.total_elevation_gain.toFixed(0) + ' m' : 'N/A'
+        elevation: a.total_elevation_gain ? a.total_elevation_gain.toFixed(0) + ' m' : 'N/A',
+        date: a.start_date ? formatDate(a.start_date) : 'N/A'
     };
 }
 
@@ -161,6 +163,10 @@ function renderTableView() {
         sorted.sort((a, b) => {
             let aVal, bVal;
             switch(tableSort.column) {
+                case 'date':
+                    aVal = a._timestamp || 0;
+                    bVal = b._timestamp || 0;
+                    break;
                 case 'distance':
                     aVal = a.distance || 0;
                     bVal = b.distance || 0;
@@ -218,25 +224,35 @@ function renderTableView() {
         return `<span style='font-size:0.9em;'>${icon}</span>`;
     };
 
+    const getSortableColumnProps = column => {
+        let ariaSort = 'none';
+        if (tableSort.column === column) {
+            ariaSort = tableSort.asc ? 'ascending' : 'descending';
+        }
+        return `role="button" aria-sort="${ariaSort}"`;
+    };
+
     const tableHeader = `
         <thead>
             <tr style="background:#e6f6fb;">
                 <th style="${tableCellStyle}">#</th>
                 <th style="${tableCellStyleLeft}">Ride Name</th>
-                <th id="sort-distance" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
-                <th id="sort-time" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
-                <th id="sort-speed" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
-                <th id="sort-elevation" style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
+                <th id="sort-date" ${getSortableColumnProps('date')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">📅 Date ${getSortIcon('date')}</th>
+                <th id="sort-distance" ${getSortableColumnProps('distance')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
+                <th id="sort-time" ${getSortableColumnProps('time')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
+                <th id="sort-speed" ${getSortableColumnProps('speed')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
+                <th id="sort-elevation" ${getSortableColumnProps('elevation')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
             </tr>
         </thead>
     `;
 
     // Build table rows
     const tableRows = sorted.map((a, i) => {
-        const { distance, time, speed, elevation } = formatActivityMeta(a);
+        const { distance, time, speed, elevation, date } = formatActivityMeta(a);
         return `<tr>
             <td style="${tableCellStyle}">${i + 1}</td>
             <td style="${tableCellStyleNoWrap}"><a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener" style="color:#0019a8;text-decoration:underline;">${a.name}</a></td>
+            <td style="${tableCellStyleNoWrap}">${date}</td>
             <td style="${tableCellStyleNoWrap}">${distance}</td>
             <td style="${tableCellStyleNoWrap}">${time}</td>
             <td style="${tableCellStyleNoWrap}">${speed}</td>
@@ -249,6 +265,7 @@ function renderTableView() {
         <tr style="background:#f5f5f5;">
             <td style="${tableCellStyle};font-weight:bold;"></td>
             <td style="${tableCellStyle};font-weight:bold;">Total</td>
+            <td style="${tableCellStyle};font-weight:bold;"></td>
             <td style="${tableCellStyleNoWrap};font-weight:bold;">${totalDistanceDisplay}</td>
             <td style="${tableCellStyleNoWrap};font-weight:bold;">${totalTimeDisplay}</td>
             <td style="${tableCellStyleNoWrap};font-weight:bold;">${avgSpeedDisplay}</td>
@@ -286,6 +303,7 @@ function renderTableView() {
     document.getElementById('sort-time').onclick = () => handleSortClick('time');
     document.getElementById('sort-speed').onclick = () => handleSortClick('speed');
     document.getElementById('sort-elevation').onclick = () => handleSortClick('elevation');
+    document.getElementById('sort-date').onclick = () => handleSortClick('date');
 }
 
 // Render the card view for activities
