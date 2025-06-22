@@ -14,10 +14,13 @@ const tableCellStyle = "padding:8px;border:1px solid #ccc;text-align:center;";
 const tableCellStyleLeft = "padding:8px;border:1px solid #ccc;";
 const tableCellStyleNoWrap = "padding:8px;border:1px solid #ccc;text-align:center;white-space:nowrap;";
 
+// Application constants
+const ROAD_THRESHOLD_PX = 10; // Threshold in pixels for road visibility detection
+
 // Cache DOM elements
 const elements = {
   loader: document.getElementById('loader'),
-  login: document.getElementById('login'),
+  login: document.querySelector('.header-login'),
   toggleBtn: document.getElementById('toggle-table-view'),
   activities: document.getElementById('activities'),
   tableView: document.getElementById('table-view'),
@@ -35,8 +38,8 @@ function adjustActivitiesPadding() {
     // Check if road is visible in viewport
     const rect = elements.activities.getBoundingClientRect();
     const roadRect = road.getBoundingClientRect();
-    // If activities bottom is close to or overlapping road, add extra padding
-    if (rect.bottom > roadRect.top - 40) {
+    // Only add extra padding if needed - reduce the threshold to minimize extra space
+    if (rect.bottom > roadRect.top - ROAD_THRESHOLD_PX) {
         elements.activities.setAttribute('data-has-road', 'true');
     } else {
         elements.activities.removeAttribute('data-has-road');
@@ -50,13 +53,13 @@ window.addEventListener('resize', adjustActivitiesPadding);
 let activitiesData = [];
 
 async function fetchActivities() {
-    elements.loader.style.display = '';
     elements.loader.removeAttribute('hidden');
-    elements.login.style.display = 'none';
-    elements.toggleBtn.style.display = 'none'; // Hide tabular view button while loading
-    // Hide both views while loading
-    elements.activities.style.display = 'none';
-    elements.tableView.style.display = 'none';
+    elements.login.classList.add('hidden');
+    elements.toggleBtn.classList.add('hidden');
+    document.querySelector('.view-toggle').classList.add('hidden'); // Hide the container using class
+    // To hide both views while loading
+    elements.activities.classList.add('hidden');
+    elements.tableView.classList.add('hidden');
     elements.activities.innerHTML = '';
 
     // Remove has-content class when no content is shown
@@ -64,32 +67,31 @@ async function fetchActivities() {
 
     try {
         const res = await fetch('/activities');
-        elements.loader.style.display = 'none';
         elements.loader.setAttribute('hidden', '');
 
         if (res.status === 401) {
-            elements.login.style.display = '';
-            if (elements.cycleImageContainer) elements.cycleImageContainer.style.display = '';
+            elements.login.classList.remove('hidden');
+            if (elements.cycleImageContainer) elements.cycleImageContainer.classList.remove('hidden');
             return;
         }
 
         if (!res.ok) {
-            elements.login.style.display = '';
-            if (elements.cycleImageContainer) elements.cycleImageContainer.style.display = '';
+            elements.login.classList.remove('hidden');
+            if (elements.cycleImageContainer) elements.cycleImageContainer.classList.remove('hidden');
             return;
         }
 
-        if (elements.cycleImageContainer) elements.cycleImageContainer.style.display = 'none';
+        if (elements.cycleImageContainer) elements.cycleImageContainer.classList.add('hidden');
         const activities = await res.json();
         activitiesData = activities;
 
         if (activities.length === 0) {
-            elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge."</p>';
-            elements.toggleBtn.style.display = 'none'; // Hide if no activities
-            elements.activities.style.display = ''; // Show card view if no activities
+            elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge.</p>';
+            elements.toggleBtn.classList.add('hidden'); // Hide if no activities
+            elements.activities.classList.remove('hidden'); // Show card view if no activities
             // Show login and image if no activities (user not logged in or no data)
-            elements.login.style.display = '';
-            if (elements.cycleImageContainer) elements.cycleImageContainer.style.display = '';
+            elements.login.classList.remove('hidden');
+            if (elements.cycleImageContainer) elements.cycleImageContainer.classList.remove('hidden');
             return;
         }
 
@@ -97,19 +99,20 @@ async function fetchActivities() {
         document.body.classList.add('has-content');
 
         renderCardView(activities);
-        elements.toggleBtn.style.display = '';
+        elements.toggleBtn.classList.remove('hidden');
+        document.querySelector('.view-toggle').classList.remove('hidden'); // Show the container using class
 
         // Show the correct view after loading
         const viewMode = localStorage.getItem('viewMode');
         if (viewMode === 'table') {
-            elements.activities.style.display = 'none';
-            elements.tableView.style.display = '';
+            elements.activities.classList.add('hidden');
+            elements.tableView.classList.remove('hidden');
             elements.toggleBtn.textContent = TOGGLE_VIEW_LABELS.card;
             renderTableView();
             tableVisible = true;
         } else {
-            elements.activities.style.display = '';
-            elements.tableView.style.display = 'none';
+            elements.activities.classList.remove('hidden');
+            elements.tableView.classList.add('hidden');
             elements.toggleBtn.textContent = TOGGLE_VIEW_LABELS.table;
             tableVisible = false;
         }
@@ -195,8 +198,12 @@ function renderTableView() {
 
     // Build table header with sort indicators
     const getSortIcon = column => {
-        return tableSort.column === column ?
-            `<span style='font-size:0.9em;'>${tableSort.asc ? '▲' : '▼'}</span>` : '';
+        if (tableSort.column !== column) {
+            return '';
+        }
+
+        let icon = tableSort.asc ? '▲' : '▼';
+        return `<span style='font-size:0.9em;'>${icon}</span>`;
     };
 
     const tableHeader = `
@@ -297,27 +304,6 @@ function renderCardView(activities) {
     }).join('');
 }
 
-// Dynamically update road markings to match number of activity tiles
-function updateRoadMarkings() {
-    const markingsContainer = document.getElementById('cycle-road-markings');
-    const activityCards = document.querySelectorAll('#activities .activity');
-    if (!markingsContainer) return;
-    const count = activityCards.length;
-    markingsContainer.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-        const marking = document.createElement('div');
-        marking.className = 'cycle-road-marking';
-        markingsContainer.appendChild(marking);
-    }
-}
-
-// Call updateRoadMarkings after activities are rendered
-function renderActivities(activities) {
-    renderCardView(activities);
-    // After rendering:
-    updateRoadMarkings();
-    adjustActivitiesPadding();
-}
 // Ensure road markings are visible on initial load and also on login page
 window.addEventListener('DOMContentLoaded', () => {
     const markingsContainer = document.getElementById('cycle-road-markings');
@@ -421,9 +407,14 @@ let tableVisible = false;
 function toggleView() {
     tableVisible = !tableVisible;
 
-    // Update view visibility
-    elements.activities.style.display = tableVisible ? 'none' : '';
-    elements.tableView.style.display = tableVisible ? '' : 'none';
+    // Update view visibility using CSS classes
+    if (tableVisible) {
+        elements.activities.classList.add('hidden');
+        elements.tableView.classList.remove('hidden');
+    } else {
+        elements.activities.classList.remove('hidden');
+        elements.tableView.classList.add('hidden');
+    }
 
     // Update button text
     elements.toggleBtn.textContent = tableVisible ? TOGGLE_VIEW_LABELS.card : TOGGLE_VIEW_LABELS.table;
@@ -444,4 +435,3 @@ elements.toggleBtn.textContent = initialViewMode === 'table' ? TOGGLE_VIEW_LABEL
 
 // Initial fetch and render
 void fetchActivities();
-
