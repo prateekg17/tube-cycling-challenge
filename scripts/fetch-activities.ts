@@ -1,3 +1,16 @@
+/**
+ * Strava Activities Fetcher for GitHub Pages
+ * 
+ * This script fetches cycling activities from the Strava API and generates
+ * a static JSON file for the GitHub Pages site. It replicates the filtering
+ * logic from the original Go application.
+ * 
+ * Filters for activities containing "terminus" in name or description,
+ * and fetches activities after March 22, 2025.
+ * 
+ * Run by GitHub Actions weekly on Sundays at 23:00 GMT.
+ */
+
 import fetch from 'node-fetch';
 import { writeFileSync } from 'fs';
 import { join } from 'path';

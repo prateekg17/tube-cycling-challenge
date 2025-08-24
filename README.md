@@ -46,7 +46,9 @@ The site features automated data fetching, parallel API calls, and an interactiv
 1. **Fork/Clone the repository**
 2. **Enable GitHub Pages** in repository settings (source: GitHub Actions)
 3. **Set up Strava API credentials** in GitHub Secrets:
-   - `STRAVA_ACCESS_TOKEN`: Your personal Strava API access token
+   - Go to repository Settings → Secrets and variables → Actions
+   - Add `STRAVA_ACCESS_TOKEN`: Your personal Strava API access token
+   - [Instructions to get Strava access token](https://developers.strava.com/docs/getting-started/#account)
 4. **Trigger the workflow**:
    - Manual: Go to Actions tab → "Update Strava Activities" → "Run workflow"
    - Automatic: Every Sunday at 23:00 GMT

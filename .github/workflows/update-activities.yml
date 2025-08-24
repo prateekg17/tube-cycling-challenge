@@ -50,8 +50,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      - name: Checkout repository (with latest changes)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Pull latest changes
+        run: git pull origin ${{ github.ref_name }}
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
