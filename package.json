@@ -1,0 +1,22 @@
+{
+  "name": "tube-cycling-challenge",
+  "version": "1.0.0",
+  "description": "A GitHub Pages application that displays cycling activities for the Tube Cycling Challenge via scheduled Strava API fetching.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "fetch-activities": "tsc && node dist/fetch-activities.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": ["strava", "cycling", "github-pages", "tube", "london"],
+  "author": "Prateek",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@types/node-fetch": "^2.6.13",
+    "node-fetch": "^3.3.2"
+  }
+}

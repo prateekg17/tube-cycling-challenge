@@ -20,7 +20,6 @@ const ROAD_THRESHOLD_PX = 10; // Threshold in pixels for road visibility detecti
 // Cache DOM elements
 const elements = {
   loader: document.getElementById('loader'),
-  login: document.querySelector('.header-login'),
   toggleBtn: document.getElementById('toggle-table-view'),
   activities: document.getElementById('activities'),
   tableView: document.getElementById('table-view'),
@@ -53,18 +52,8 @@ window.addEventListener('resize', adjustActivitiesPadding);
  */
 let activitiesData = [];
 
-// Helper function to show the login view
-function showLoginView() {
-    elements.login.style.display = ''; // Use direct style manipulation
-    if (elements.cycleImageContainer) {
-        elements.cycleImageContainer.style.display = '';
-    }
-    elements.viewToggle.style.display = 'none'; // Use cached element
-}
-
 // Helper function to show the activities view
 function showActivitiesView() {
-    elements.login.style.display = 'none'; // Use direct style manipulation
     if (elements.cycleImageContainer) {
         elements.cycleImageContainer.style.display = 'none';
     }
@@ -74,7 +63,6 @@ function showActivitiesView() {
 
 async function fetchActivities() {
     elements.loader.removeAttribute('hidden');
-    elements.login.style.display = 'none'; // Hide login tile when loader is shown
     elements.activities.style.display = 'none';
     elements.tableView.style.display = 'none';
     elements.activities.innerHTML = '';
@@ -83,17 +71,12 @@ async function fetchActivities() {
     document.body.classList.remove('has-content');
 
     try {
-        const res = await fetch('/activities');
+        // Fetch activities from static JSON file
+        const res = await fetch('./activities.json');
         elements.loader.setAttribute('hidden', '');
 
-        if (res.status === 401) {
-            showLoginView();
-            return;
-        }
-
         if (!res.ok) {
-            showLoginView();
-            return;
+            throw new Error(`Failed to load activities: ${res.status}`);
         }
 
         showActivitiesView();
@@ -132,10 +115,10 @@ async function fetchActivities() {
         adjustActivitiesPadding();
     } catch (error) {
         console.error('Error fetching activities:', error);
-        elements.loader.style.display = 'none';
+        elements.loader.setAttribute('hidden', '');
         elements.activities.innerHTML = '<p>Error loading activities. Please try again later.</p>';
-        elements.activities.style.display = '';
-        showLoginView();
+        elements.activities.style.display = 'grid';
+        elements.viewToggle.style.display = 'none';
     }
 }
 let tableSort = { column: null, asc: true };

@@ -1,0 +1,66 @@
+name: Update Strava Activities
+
+on:
+  schedule:
+    # Run every Sunday at 23:00 GMT (11 PM)
+    - cron: '0 23 * * 0'
+  workflow_dispatch: # Allow manual triggering for testing
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-activities:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Fetch Strava activities
+        env:
+          STRAVA_ACCESS_TOKEN: ${{ secrets.STRAVA_ACCESS_TOKEN }}
+        run: npm run fetch-activities
+        
+      - name: Commit updated activities
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add static/activities.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update Strava activities data - $(date)"
+            git push
+          fi
+
+  deploy-pages:
+    needs: update-activities
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./static
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
