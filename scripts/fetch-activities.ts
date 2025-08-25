@@ -11,9 +11,14 @@
  * Run by GitHub Actions weekly on Sundays at 23:00 GMT.
  */
 
-import fetch from 'node-fetch';
 import { writeFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import fetch from 'node-fetch';
+
+// ES module replacement for __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 interface StravaActivity {
   id: number;
@@ -107,7 +112,7 @@ function filterAndSortActivities(activities: StravaActivity[]): StravaActivity[]
  */
 async function main() {
   const accessToken = process.env.STRAVA_ACCESS_TOKEN;
-  
+
   if (!accessToken) {
     console.error('Error: STRAVA_ACCESS_TOKEN environment variable is required');
     process.exit(1);

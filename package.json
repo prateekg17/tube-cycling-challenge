@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A GitHub Pages application that displays cycling activities for the Tube Cycling Challenge via scheduled Strava API fetching.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "fetch-activities": "tsc && node dist/fetch-activities.js",
