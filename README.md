@@ -1,7 +1,5 @@
 # Prateek's Tube Cycling Challenge
 
-# Prateek's Tube Cycling Challenge
-
 A GitHub Pages static site that displays my cycling activities for a self-made Tube challenge. The site automatically updates weekly with new Strava activities via a scheduled GitHub Action.
 
 As part of this Tube challenge, I'm cycling to and from all the terminus Tube stations from my home within the London TfL underground network.
