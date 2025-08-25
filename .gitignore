@@ -119,3 +119,7 @@ go.work.sum
 # env file
 .env
 
+# Node.js build output
+dist/
+node_modules/
+
