@@ -55,6 +55,11 @@ jobs:
         with:
           name: activities-static
           path: static
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: static
           
       - name: Deploy to GitHub Pages
         id: deployment
