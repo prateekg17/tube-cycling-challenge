@@ -31,7 +31,7 @@ The site features automated data fetching, parallel API calls, and an interactiv
 - **Frontend**: Static HTML/CSS/JavaScript served via GitHub Pages
 - **Data Source**: Weekly GitHub Action fetches Strava data and generates `activities.json`
 - **Deployment**: Automatic GitHub Pages deployment after data updates
-- **Filtering Logic**: TypeScript script (converted from original Go logic)
+- **Filtering Logic**: TypeScript script that filters activities by date and keywords
 
 ## Requirements
 - Node.js 20+ (for GitHub Actions)
@@ -121,8 +121,6 @@ The web UI displays:
   - **`script.js`** — Frontend logic for displaying activities
   - **`style.css`** — Styling
   - **`activities.json`** — Generated data file (updated weekly)
-- **`main.go`** — Legacy Go server (kept for reference/local development)
-- **`main_test.go`** — Tests for filtering logic
 - **`package.json`** — Node.js dependencies for GitHub Action
 - **`tsconfig.json`** — TypeScript configuration
 

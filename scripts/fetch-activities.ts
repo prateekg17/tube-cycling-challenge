@@ -2,8 +2,7 @@
  * Strava Activities Fetcher for GitHub Pages
  * 
  * This script fetches cycling activities from the Strava API and generates
- * a static JSON file for the GitHub Pages site. It replicates the filtering
- * logic from the original Go application.
+ * a static JSON file for the GitHub Pages site.
  * 
  * Filters for activities containing "terminus" in name or description,
  * and fetches activities after March 22, 2025.
@@ -88,7 +87,7 @@ async function fetchAllActivities(token: string): Promise<StravaActivity[]> {
 }
 
 /**
- * Filter and sort activities (same logic as Go version)
+ * Filter and sort activities by keyword and date
  */
 function filterAndSortActivities(activities: StravaActivity[]): StravaActivity[] {
   const filtered = activities.filter(activity => {
