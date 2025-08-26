@@ -35,7 +35,7 @@ interface StravaActivity {
  * Fetch access token using refresh token from Strava API
  */
 async function getAccessToken(): Promise<string> {
-    const clientId =  process.env.STRAVA_CLIENT_ID;
+    const clientId = process.env.STRAVA_CLIENT_ID;
     const clientSecret = process.env.STRAVA_CLIENT_SECRET;
     const refreshToken = process.env.STRAVA_REFRESH_TOKEN;
 
@@ -147,7 +147,7 @@ async function main() {
     const accessToken = await getAccessToken();
 
     if (!accessToken) {
-        console.error('Error: STRAVA_ACCESS_TOKEN environment variable is required');
+        console.error('Error: OAuth credentials are missing for Strava API or token refresh failed');
         process.exit(1);
     }
 

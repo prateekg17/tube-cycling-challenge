@@ -36,16 +36,21 @@ The site features automated data fetching, parallel API calls, and an interactiv
 ## Requirements
 - Node.js 20+ (for GitHub Actions)
 - GitHub repository with Pages enabled
-- Strava API access token (stored in GitHub Secrets)
+- Strava API credentials:
+    - `STRAVA_CLIENT_ID` (stored in GitHub Variables)
+    - `STRAVA_CLIENT_SECRET` (stored in GitHub Secrets)
+    - `STRAVA_REFRESH_TOKEN` (stored in GitHub Secrets)
 
 ## Setup
 
 ### For GitHub Pages Deployment:
 1. **Fork/Clone the repository**
 2. **Enable GitHub Pages** in repository settings (source: GitHub Actions)
-3. **Set up Strava API credentials** in GitHub Secrets:
+3. **Set up Strava API credentials** in GitHub Secrets and Variables:
    - Go to repository Settings → Secrets and variables → Actions
-   - Add `STRAVA_ACCESS_TOKEN`: Your personal Strava API access token
+   - Add `STRAVA_CLIENT_ID` as a variable: Your personal Strava API client ID
+   - Add `STRAVA_CLIENT_SECRET` as a secret: Your personal Strava API client secret
+   - Add `STRAVA_REFRESH_TOKEN` as a secret: Your personal Strava refresh token to retrieve the access token
    - [Instructions to get Strava access token](https://developers.strava.com/docs/getting-started/#account)
 4. **Trigger the workflow**:
    - Manual: Go to Actions tab → "Update Strava Activities" → "Run workflow"
@@ -63,9 +68,11 @@ The site features automated data fetching, parallel API calls, and an interactiv
    npm install
    ```
 
-3. **Set environment variable:**
+3. **Set environment variables:**
    ```sh
-   export STRAVA_ACCESS_TOKEN=your_token_here
+    export STRAVA_CLIENT_ID=your_client_id
+    export STRAVA_CLIENT_SECRET=your_client_secret
+    export STRAVA_REFRESH_TOKEN=your_refresh_token
    ```
 
 4. **Fetch activities and build:**
@@ -74,16 +81,21 @@ The site features automated data fetching, parallel API calls, and an interactiv
    ```
 
 5. **Serve locally:**
-   ```sh
-   cd static
-   python3 -m http.server 8080
-   # Visit http://localhost:8080
-   ```
+    - Using Python:
+      ```sh
+      cd static
+      python3 -m http.server 8080
+      # Visit http://localhost:8080
+      ```
+    - Or using Node.js (requires npm):
+      ```sh
+      npx serve static -l 8080
+      # Visit http://localhost:8080
+      ```
 
 ## User Interface
 The web UI displays:
 - **Header**: Custom TFL and cycling-themed logos with the challenge title.
-- **Login Button**: Shown if you are not logged in with Strava.
 - **Loading Indicator**: Displays while activities are being fetched.
 - **Toggle View Button**: Switch between card and tabular views.
 - **Card View**: Each activity shows:
@@ -100,6 +112,7 @@ The web UI displays:
 
 ## How It Works
 - **Scheduled Data Fetching**: A GitHub Action runs every Sunday at 23:00 GMT to fetch the latest Strava activities
+- **Automated Token Refresh**: The script uses the Strava OAuth refresh token flow to obtain a new access token before each fetch
 - **Data Processing**: The action fetches activities in parallel from the Strava API (up to 10 pages) using a pre-configured access token
 - **Filtering**: Activities are filtered by date (after March 22, 2025) and keyword ("terminus" in name or description)
 - **Static Generation**: Filtered activities are saved as `static/activities.json` and committed to the repository
@@ -129,7 +142,6 @@ MIT
 
 ## Credits
 - [Strava API Documentation](https://developers.strava.com/docs/)
-- Vibe Coding :D
 - GitHub Copilot
 
 ---
