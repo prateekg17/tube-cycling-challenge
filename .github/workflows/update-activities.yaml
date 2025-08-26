@@ -30,7 +30,9 @@ jobs:
         
       - name: Fetch Strava activities
         env:
-          STRAVA_ACCESS_TOKEN: ${{ secrets.STRAVA_ACCESS_TOKEN }}
+          STRAVA_CLIENT_ID: ${{ vars.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
         run: npm run fetch-activities
         
       - name: Upload activities artifact
