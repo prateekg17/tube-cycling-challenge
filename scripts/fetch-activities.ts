@@ -146,11 +146,6 @@ function filterAndSortActivities(activities: StravaActivity[]): StravaActivity[]
 async function main() {
     const accessToken = await getAccessToken();
 
-    if (!accessToken) {
-        console.error('Error: OAuth credentials are missing for Strava API or token refresh failed');
-        process.exit(1);
-    }
-
     try {
         console.log('Fetching activities from Strava API...');
         const allActivities = await fetchAllActivities(accessToken);
