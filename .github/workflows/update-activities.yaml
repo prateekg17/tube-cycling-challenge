@@ -1,6 +1,9 @@
 name: Update Strava Activities
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # Run every Sunday at 23:00 GMT (11 PM)
     - cron: '0 23 * * 0'
