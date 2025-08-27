@@ -19,7 +19,8 @@ import fetch from 'node-fetch';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-interface StravaActivity {
+// Exported for tests
+export interface StravaActivity {
     id: number;
     name: string;
     description?: string;
@@ -34,7 +35,7 @@ interface StravaActivity {
 /**
  * Fetch access token using refresh token from Strava API
  */
-async function getAccessToken(): Promise<string> {
+export async function getAccessToken(): Promise<string> {
     const clientId = process.env.STRAVA_CLIENT_ID;
     const clientSecret = process.env.STRAVA_CLIENT_SECRET;
     const refreshToken = process.env.STRAVA_REFRESH_TOKEN;
@@ -65,7 +66,7 @@ async function getAccessToken(): Promise<string> {
 /**
  * Fetch a single page of activities from Strava API
  */
-async function fetchActivitiesPage(token: string, page: number): Promise<StravaActivity[]> {
+export async function fetchActivitiesPage(token: string, page: number): Promise<StravaActivity[]> {
     const url = new URL('https://www.strava.com/api/v3/athlete/activities');
     url.searchParams.set('per_page', '200');
     url.searchParams.set('page', page.toString());
@@ -93,7 +94,7 @@ async function fetchActivitiesPage(token: string, page: number): Promise<StravaA
 /**
  * Fetch all activities from Strava API using parallel requests
  */
-async function fetchAllActivities(token: string): Promise<StravaActivity[]> {
+export async function fetchAllActivities(token: string): Promise<StravaActivity[]> {
     const maxPages = 10; // Fetch up to 10 pages in parallel
     const promises: Promise<StravaActivity[]>[] = [];
 
@@ -121,7 +122,7 @@ async function fetchAllActivities(token: string): Promise<StravaActivity[]> {
 /**
  * Filter and sort activities by keyword and date
  */
-function filterAndSortActivities(activities: StravaActivity[]): StravaActivity[] {
+export function filterAndSortActivities(activities: StravaActivity[]): StravaActivity[] {
     const filtered = activities.filter(activity => {
         const name = (activity.name || '').toLowerCase();
         const description = (activity.description || '').toLowerCase();
@@ -165,5 +166,7 @@ async function main() {
     }
 }
 
-// Run the main function
-main().catch(console.error);
+// Only run main when executed directly (not when imported for tests)
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(console.error);
+}

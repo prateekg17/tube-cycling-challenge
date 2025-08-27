@@ -304,6 +304,26 @@ body:not(.has-content) footer {
     opacity: 0.7;
     margin: 0 12px;
 }
+.follow-strava {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3em 0.6em;
+    background: #fc4c02; /* Strava orange */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+}
+.follow-strava:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.follow-strava img {
+    height: 36px;
+    width: auto;
+    display: block;
+}
 @media (max-width: 900px) {
     #activities {
         grid-template-columns: 1fr;
@@ -312,4 +332,5 @@ body:not(.has-content) footer {
     main {
         padding: 0 0.5em;
     }
+    .follow-strava img { height: 30px; }
 }
