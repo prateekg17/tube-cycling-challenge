@@ -9,6 +9,11 @@ on:
     - cron: '0 23 * * 0'
   workflow_dispatch:
 
+# Prevent overlapping runs (manual + scheduled) for same workflow
+concurrency:
+  group: update-activities
+  cancel-in-progress: false
+
 permissions:
   contents: write
   pages: write
@@ -38,27 +43,26 @@ jobs:
           STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
         run: npm run fetch-activities
         
-      - name: Upload activities artifact
+      - name: Upload site artifact
         uses: actions/upload-artifact@v4
         with:
-          name: activities-static
+          name: site-static # renamed from activities-static (entire site, not only activities)
           path: static
+          if-no-files-found: error
+          retention-days: 1
 
   deploy-pages:
     needs: update-activities
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        
       - name: Setup Pages
         uses: actions/configure-pages@v5
         
-      - name: Download activities artifact
+      - name: Download site artifact
         uses: actions/download-artifact@v5
         with:
-          name: activities-static
+          name: site-static
           path: static
 
       - name: Upload pages artifact
