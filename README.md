@@ -29,6 +29,7 @@ The site features automated data fetching, parallel API calls, and an interactiv
 - **No user authentication required** - data is pre-fetched and served statically
 - **Unit tests** (Vitest) for core data logic and API helper functions
 - **CI workflow** runs tests automatically on pull requests
+- **Concurrency control** prevents overlapping update/deploy runs
 
 ## Architecture
 - **Frontend**: Static HTML/CSS/JavaScript served via GitHub Pages
@@ -100,7 +101,10 @@ npx vitest
 ## Continuous Integration (CI)
 - **Workflow**: `.github/workflows/test.yaml` runs on pull requests (open, reopen, synchronize, label) and executes the Vitest suite.
 - **Strava credentials not required** for tests (fetch is mocked).
-- **Scheduled fetch & deploy**: `.github/workflows/update-activities.yaml` handles weekly data refresh and Pages deployment using an artifact (the generated `activities.json` is not committed; it is packaged and deployed directly).
+- **Scheduled fetch & deploy**: `.github/workflows/update-activities.yaml` handles weekly data refresh and Pages deployment.
+- **Page deployment artifact name**: `site-static` (contains the entire `static/` directory including `index.html`, images, and `activities.json`).
+- **No duplicate runs**: Concurrency group `update-activities` prevents overlapping scheduled/manual executions.
+- The generated `activities.json` is not committed; it is produced during the workflow and shipped inside the deployment artifact.
 
 ## User Interface
 The web UI displays:
@@ -116,7 +120,7 @@ The web UI displays:
 1. **Workflow runs** (cron or manual) → refresh Strava token → parallel fetch up to 10 pages.
 2. **Filtering**: Only activities after 22 Mar 2025 containing keyword "terminus" in name or description.
 3. **Output**: Filtered list written to `static/activities.json` in the runner workspace.
-4. **Artifact**: `static` folder uploaded; deployment job publishes it to Pages.
+4. **Artifact**: Entire `static` folder uploaded as `site-static`; deployment job publishes it to Pages.
 5. **Frontend**: Static site fetches `activities.json` client-side to render UI.
 
 ## Configuration
@@ -127,7 +131,7 @@ The web UI displays:
 - **Tests**: Add more cases under `scripts/*.test.ts` (Vitest auto-detects by pattern).
 
 ## Project Structure
-- `.github/workflows/update-activities.yaml` – Scheduled Strava fetch & deploy
+- `.github/workflows/update-activities.yaml` – Scheduled Strava fetch & deploy (artifact: `site-static`)
 - `.github/workflows/test.yaml` – PR test CI
 - `scripts/fetch-activities.ts` – Strava fetch & processing (ESM / NodeNext)
 - `scripts/fetch-activities.test.ts` – Unit tests (Vitest, mocked fetch)
