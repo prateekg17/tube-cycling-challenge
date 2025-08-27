@@ -22,120 +22,123 @@ The site features automated data fetching, parallel API calls, and an interactiv
 - **Automated weekly updates** via GitHub Actions (every Sunday at 23:00 GMT)
 - **Static site** hosted on GitHub Pages - no server required
 - Fetches activities from Strava API with pre-configured authentication
-- Filters activities by the challenge start date and the "Terminus" keyword
+- Filters activities by the challenge start date and the "terminus" keyword
 - Parallel fetching of activity pages for faster data collection
 - Interactive web UI with card and table views
+- **Follow Me on Strava** badge in header
 - **No user authentication required** - data is pre-fetched and served statically
+- **Unit tests** (Vitest) for core data logic and API helper functions
+- **CI workflow** runs tests automatically on pull requests
 
 ## Architecture
 - **Frontend**: Static HTML/CSS/JavaScript served via GitHub Pages
 - **Data Source**: Weekly GitHub Action fetches Strava data and generates `activities.json`
 - **Deployment**: Automatic GitHub Pages deployment after data updates
 - **Filtering Logic**: TypeScript script that filters activities by date and keywords
+- **Testing**: Vitest for deterministic unit tests (fetch mocked)
 
 ## Requirements
-- Node.js 20+ (for GitHub Actions)
+- Node.js 20+ (local + GitHub Actions) – project uses native ESM (`"type": "module"`) and `NodeNext` module resolution
 - GitHub repository with Pages enabled
 - Strava API credentials:
-    - `STRAVA_CLIENT_ID` (stored in GitHub Variables)
-    - `STRAVA_CLIENT_SECRET` (stored in GitHub Secrets)
-    - `STRAVA_REFRESH_TOKEN` (stored in GitHub Secrets)
+    - `STRAVA_CLIENT_ID` (GitHub Actions Variable)
+    - `STRAVA_CLIENT_SECRET` (Secret)
+    - `STRAVA_REFRESH_TOKEN` (Secret)
 
 ## Setup
 
-### For GitHub Pages Deployment:
+### For GitHub Pages Deployment
 1. **Fork/Clone the repository**
 2. **Enable GitHub Pages** in repository settings (source: GitHub Actions)
 3. **Set up Strava API credentials** in GitHub Secrets and Variables:
-   - Go to repository Settings → Secrets and variables → Actions
-   - Add `STRAVA_CLIENT_ID` as a variable: Your personal Strava API client ID
-   - Add `STRAVA_CLIENT_SECRET` as a secret: Your personal Strava API client secret
-   - Add `STRAVA_REFRESH_TOKEN` as a secret: Your personal Strava refresh token to retrieve the access token
-   - [Instructions to get Strava access token](https://developers.strava.com/docs/getting-started/#account)
+   - Settings → Secrets and variables → Actions
+   - Add Variable: `STRAVA_CLIENT_ID`
+   - Add Secrets: `STRAVA_CLIENT_SECRET`, `STRAVA_REFRESH_TOKEN`
+   - [How to obtain credentials](https://developers.strava.com/docs/getting-started/#account)
 4. **Trigger the workflow**:
-   - Manual: Go to Actions tab → "Update Strava Activities" → "Run workflow"
+   - Manual: Actions → "Update Strava Activities" → Run workflow
    - Automatic: Every Sunday at 23:00 GMT
 
-### For Local Development:
-1. **Clone the repository:**
+### For Local Development
+1. Clone repository:
    ```sh
    git clone <repo-url>
    cd tube-cycling-challenge
    ```
-
-2. **Install dependencies:**
+2. Install dependencies:
    ```sh
    npm install
    ```
-
-3. **Set environment variables:**
+3. (Optional for full fetch) Export environment variables:
    ```sh
-    export STRAVA_CLIENT_ID=your_client_id
-    export STRAVA_CLIENT_SECRET=your_client_secret
-    export STRAVA_REFRESH_TOKEN=your_refresh_token
+   export STRAVA_CLIENT_ID=your_client_id
+   export STRAVA_CLIENT_SECRET=your_client_secret
+   export STRAVA_REFRESH_TOKEN=your_refresh_token
    ```
-
-4. **Fetch activities and build:**
+4. Fetch activities & build:
    ```sh
    npm run fetch-activities
    ```
+5. Serve locally:
+   ```sh
+   npx serve static -l 8080
+   # or
+   (cd static && python3 -m http.server 8080)
+   ```
+6. Open: http://localhost:8080
 
-5. **Serve locally:**
-    - Using Python:
-      ```sh
-      cd static
-      python3 -m http.server 8080
-      # Visit http://localhost:8080
-      ```
-    - Or using Node.js (requires npm):
-      ```sh
-      npx serve static -l 8080
-      # Visit http://localhost:8080
-      ```
+### Running Tests
+Tests mock network I/O and do not require Strava credentials.
+```sh
+npm test
+```
+To run in watch mode:
+```sh
+npx vitest
+```
+
+## Continuous Integration (CI)
+- **Workflow**: `.github/workflows/test.yaml` runs on pull requests (open, reopen, synchronize, label) and executes the Vitest suite.
+- **Strava credentials not required** for tests (fetch is mocked).
+- **Scheduled fetch & deploy**: `.github/workflows/update-activities.yaml` handles weekly data refresh and Pages deployment using an artifact (the generated `activities.json` is not committed; it is packaged and deployed directly).
 
 ## User Interface
 The web UI displays:
-- **Header**: Custom TFL and cycling-themed logos with the challenge title.
-- **Loading Indicator**: Displays while activities are being fetched.
+- **Header**: Custom TFL & cycling-themed logos, challenge title, and a Strava follow badge.
+- **Loading Indicator**: While activities load (from static JSON).
 - **Toggle View Button**: Switch between card and tabular views.
-- **Card View**: Each activity shows:
-  - Ride name (linked to Strava)
-  - Date (formatted with proper ordinal suffixes - e.g., "1st January 2023")
-  - Distance (km), Time, Average Speed (km/h), Elevation Gain (m)
-- **Tabular View**: Table with sortable columns for:
-  - Ride name (linked to Strava)
-  - Date, Distance, Time, Speed, Elevation
-  - Totals and averages in the footer
-  - **Sorting**: Click any column header to sort by that column (ascending/descending)
-- **Animated Road Markings**: Visual elements in the footer that dynamically update based on the number of activities
-- **View Persistence**: The app remembers your preferred view (card or table) between sessions using localStorage
+- **Card View**: Each activity shows ride name, date, stats, description (if present).
+- **Tabular View**: Sortable columns (name, date, distance, time, speed, elevation) with totals/averages.
+- **Animated Road Markings**: Visual footer elements scaled to activity count.
+- **View Persistence**: Preferred view stored in `localStorage`.
 
 ## How It Works
-- **Scheduled Data Fetching**: A GitHub Action runs every Sunday at 23:00 GMT to fetch the latest Strava activities
-- **Automated Token Refresh**: The script uses the Strava OAuth refresh token flow to obtain a new access token before each fetch
-- **Data Processing**: The action fetches activities in parallel from the Strava API (up to 10 pages) using a pre-configured access token
-- **Filtering**: Activities are filtered by date (after March 22, 2025) and keyword ("terminus" in name or description)
-- **Static Generation**: Filtered activities are saved as `static/activities.json` and committed to the repository
-- **Automatic Deployment**: GitHub Pages automatically deploys the updated static site
-- **Interactive UI**: Users can view activities as cards or in a sortable table, with totals and averages shown
+1. **Workflow runs** (cron or manual) → refresh Strava token → parallel fetch up to 10 pages.
+2. **Filtering**: Only activities after 22 Mar 2025 containing keyword "terminus" in name or description.
+3. **Output**: Filtered list written to `static/activities.json` in the runner workspace.
+4. **Artifact**: `static` folder uploaded; deployment job publishes it to Pages.
+5. **Frontend**: Static site fetches `activities.json` client-side to render UI.
 
 ## Configuration
-- **Schedule**: Modify the cron expression in `.github/workflows/update-activities.yml` to change update frequency
-- **Data Range**: Adjust the date filtering in `scripts/fetch-activities.ts` (currently after March 22, 2025)
-- **Filtering Logic**: Modify the `filterAndSortActivities` function in `scripts/fetch-activities.ts`
-- **UI Logic**: Customize the frontend in `static/script.js` and `static/index.html`
-- **Parallel Fetching**: Adjust `maxPages` in `scripts/fetch-activities.ts` (default: 10 pages)
+- **Schedule**: Edit cron in `.github/workflows/update-activities.yaml`.
+- **Date Range**: Update `after` logic in `fetchActivitiesPage` inside `scripts/fetch-activities.ts`.
+- **Keyword Filter**: Modify `filterAndSortActivities` in `scripts/fetch-activities.ts`.
+- **Parallelism**: Change `maxPages` in `fetchAllActivities` (default 10).
+- **Tests**: Add more cases under `scripts/*.test.ts` (Vitest auto-detects by pattern).
 
 ## Project Structure
-- **`.github/workflows/update-activities.yml`** — GitHub Action for scheduled data fetching
-- **`scripts/fetch-activities.ts`** — TypeScript script to fetch and process Strava data
-- **`static/`** — GitHub Pages static site files
-  - **`index.html`** — Frontend UI
-  - **`script.js`** — Frontend logic for displaying activities
-  - **`style.css`** — Styling
-  - **`activities.json`** — Generated data file (updated weekly)
-- **`package.json`** — Node.js dependencies for GitHub Action
-- **`tsconfig.json`** — TypeScript configuration
+- `.github/workflows/update-activities.yaml` – Scheduled Strava fetch & deploy
+- `.github/workflows/test.yaml` – PR test CI
+- `scripts/fetch-activities.ts` – Strava fetch & processing (ESM / NodeNext)
+- `scripts/fetch-activities.test.ts` – Unit tests (Vitest, mocked fetch)
+- `static/` – Site assets (`index.html`, `style.css`, `script.js`, `activities.json`, images)
+- `package.json` – Dependencies & scripts
+- `tsconfig.json` – TypeScript config (ES2022 target, NodeNext resolution)
+
+## Notes on ESM / NodeNext
+- Project uses `"type": "module"` and `"moduleResolution": "NodeNext"`.
+- Relative imports in tests use explicit `.js` extensions after compilation (Vitest handles TypeScript transpile in-memory).
+- `node-fetch@3` (ESM) is used directly—no downgrade or CommonJS wrapper required.
 
 ## License
 MIT
@@ -145,5 +148,4 @@ MIT
 - GitHub Copilot
 
 ---
-
-Feel free to contribute or open issues for improvements!
+Contributions & suggestions welcome!

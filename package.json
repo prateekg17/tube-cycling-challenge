@@ -7,17 +7,17 @@
   "scripts": {
     "build": "tsc",
     "fetch-activities": "tsc && node dist/fetch-activities.js",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "vitest run"
   },
   "keywords": ["strava", "cycling", "github-pages", "tube", "london"],
   "author": "Prateek",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^24.3.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
-    "@types/node-fetch": "^2.6.13",
     "node-fetch": "^3.3.2"
   }
 }
