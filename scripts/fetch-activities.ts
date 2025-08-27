@@ -28,6 +28,7 @@ export interface StravaActivity {
     distance?: number;
     moving_time?: number;
     total_elevation_gain?: number;
+
     [key: string]: any;
 }
 
