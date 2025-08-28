@@ -272,8 +272,4 @@ body:not(.has-content) footer {
         padding: 0 0.5em;
     }
     .follow-strava img { height: 30px; }
-    .header-cycle-img { height: 54px; }
-    .tfl-logo-img { height: 54px; }
-    .tfl-logo-wrapper, .cycle-logo-wrapper { padding: 4px 10px; border-radius: 12px; }
-    .cycle-logo-wrapper .header-cycle-img { height: 54px; }
 }
