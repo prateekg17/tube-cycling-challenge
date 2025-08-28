@@ -109,11 +109,11 @@ npx vitest
 ## User Interface
 The web UI displays:
 - **Header**: Custom TFL & cycling-themed logos, challenge title, and a Strava follow badge.
-- **Loading Indicator**: While activities load (from static JSON).
 - **Toggle View Button**: Switch between card and tabular views.
 - **Card View**: Each activity shows ride name, date, stats, description (if present).
 - **Tabular View**: Sortable columns (name, date, distance, time, speed, elevation) with totals/averages.
 - **Animated Road Markings**: Visual footer elements scaled to activity count.
+- **Empty State Message**: Clear message when no activities match the filter.
 - **View Persistence**: Preferred view stored in `localStorage`.
 
 ## How It Works

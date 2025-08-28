@@ -61,85 +61,10 @@ header.tfl-header {
     align-items: center;
     gap: 1em;
 }
-/* Login button in header */
-.header-login {
-    margin: 0;
-}
-.header-login button {
-    background: var(--accent-red);
-    color: #fff;
-    border: none;
-    border-radius: 30px;
-    padding: 0.8em 1.8em;
-    font-size: 1em;
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.7em;
-}
-.header-login button:hover {
-    background: #b91d1c;
-}
 main {
     max-width: var(--container-max-width);
     margin: 0 auto;
     padding: 0 2em;
-}
-#cycle-image-container {
-    text-align: center;
-    margin: 2em auto 2em auto;
-    position: relative;
-    z-index: 1;
-}
-.cycle-image {
-    width: 280px;
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-}
-#login {
-    margin: 3em auto 2em auto;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-#login[hidden] { display: none !important; }
-#login button {
-    background: var(--accent-red);
-    color: #fff;
-    border: none;
-    border-radius: 30px;
-    padding: 1em 2.5em;
-    font-size: 1.2em;
-    font-family: 'Montserrat', Arial, sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.7em;
-}
-#login button:hover {
-    background: #b91d1c;
-}
-.cycle-icon {
-    width: 32px;
-    height: 32px;
-    margin-right: 0.3em;
-}
-#loader {
-    text-align: center;
-    font-size: 1.1em;
-    color: var(--primary-blue);
-    margin: 2em 0;
 }
 .view-toggle {
     text-align: center;
@@ -324,6 +249,20 @@ body:not(.has-content) footer {
     width: auto;
     display: block;
 }
+.tfl-logo-wrapper, .cycle-logo-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 16px;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.65) 55%, rgba(255,255,255,0.15) 100%);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    backdrop-filter: saturate(160%) blur(2px);
+    -webkit-backdrop-filter: saturate(160%) blur(2px);
+}
+.tfl-logo-wrapper .tfl-logo-img { height: 70px; }
+.cycle-logo-wrapper .header-cycle-img { height: 70px; }
 @media (max-width: 900px) {
     #activities {
         grid-template-columns: 1fr;
@@ -333,4 +272,8 @@ body:not(.has-content) footer {
         padding: 0 0.5em;
     }
     .follow-strava img { height: 30px; }
+    .header-cycle-img { height: 54px; }
+    .tfl-logo-img { height: 54px; }
+    .tfl-logo-wrapper, .cycle-logo-wrapper { padding: 4px 10px; border-radius: 12px; }
+    .cycle-logo-wrapper .header-cycle-img { height: 54px; }
 }
