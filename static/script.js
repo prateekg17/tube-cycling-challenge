@@ -19,16 +19,11 @@ const ROAD_THRESHOLD_PX = 10; // Threshold in pixels for road visibility detecti
 
 // Cache DOM elements
 const elements = {
-  loader: document.getElementById('loader'),
   toggleBtn: document.getElementById('toggle-table-view'),
   activities: document.getElementById('activities'),
   tableView: document.getElementById('table-view'),
-  cycleImageContainer: document.getElementById('cycle-image-container'),
   viewToggle: document.querySelector('.view-toggle')
 };
-
-// Ensure the cycle image is visible by default on page load
-if (elements.cycleImageContainer) elements.cycleImageContainer.style.display = '';
 
 // Dynamically adjust padding if road is visible
 function adjustActivitiesPadding() {
@@ -54,50 +49,37 @@ let activitiesData = [];
 
 // Helper function to show the activities view
 function showActivitiesView() {
-    if (elements.cycleImageContainer) {
-        elements.cycleImageContainer.style.display = 'none';
-    }
-    elements.viewToggle.style.display = 'block'; // Use cached element
+    elements.viewToggle.style.display = 'block';
     elements.toggleBtn.style.display = '';
 }
 
 async function fetchActivities() {
-    elements.loader.removeAttribute('hidden');
+    // Removed loader handling (static site)
     elements.activities.style.display = 'none';
     elements.tableView.style.display = 'none';
     elements.activities.innerHTML = '';
 
-    // Remove has-content class when no content is shown
     document.body.classList.remove('has-content');
 
     try {
-        // Fetch activities from static JSON file
         const res = await fetch('./activities.json');
-        elements.loader.setAttribute('hidden', '');
-
-        if (!res.ok) {
-            throw new Error(`Failed to load activities: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`Failed to load activities: ${res.status}`);
 
         showActivitiesView();
-
         const activities = await res.json();
         activities.forEach(a => a._timestamp = a.start_date ? Date.parse(a.start_date) : 0);
         activitiesData = activities;
 
         if (activities.length === 0) {
             elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge.</p>';
-            elements.viewToggle.style.display = 'none'; // Use cached element
-            elements.activities.style.display = 'grid'; // Show card view if no activities
+            elements.viewToggle.style.display = 'none';
+            elements.activities.style.display = 'grid';
             return;
         }
 
-        // Add has-content class when content is shown
         document.body.classList.add('has-content');
-
         renderCardView(activities);
 
-        // Show the correct view after loading
         const viewMode = localStorage.getItem('viewMode');
         if (viewMode === 'table') {
             elements.activities.style.display = 'none';
@@ -114,8 +96,7 @@ async function fetchActivities() {
 
         adjustActivitiesPadding();
     } catch (error) {
-        console.error('Error fetching activities:', error);
-        elements.loader.setAttribute('hidden', '');
+        console.error('Error loading activities:', error);
         elements.activities.innerHTML = '<p>Error loading activities. Please try again later.</p>';
         elements.activities.style.display = 'grid';
         elements.viewToggle.style.display = 'none';

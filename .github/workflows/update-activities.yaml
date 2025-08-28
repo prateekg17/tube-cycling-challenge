@@ -46,7 +46,7 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-artifact@v4
         with:
-          name: site-static # renamed from activities-static (entire site, not only activities)
+          name: site-static
           path: static
           if-no-files-found: error
           retention-days: 1
