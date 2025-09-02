@@ -13,6 +13,7 @@
 const tableCellStyle = "padding:8px;border:1px solid #ccc;text-align:center;";
 const tableCellStyleLeft = "padding:8px;border:1px solid #ccc;";
 const tableCellStyleNoWrap = "padding:8px;border:1px solid #ccc;text-align:center;white-space:nowrap;";
+const tableCellStyleNoWrapLeft = "padding:8px;border:1px solid #ccc;text-align:left;white-space:nowrap;";
 
 // Application constants
 const ROAD_THRESHOLD_PX = 10; // Threshold in pixels for road visibility detection
@@ -215,7 +216,7 @@ function renderTableView() {
         const { distance, time, speed, elevation, date } = formatActivityMeta(a);
         return `<tr>
             <td style="${tableCellStyle}">${i + 1}</td>
-            <td style="${tableCellStyleNoWrap}"><a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener" style="color:#0019a8;text-decoration:underline;">${a.name}</a></td>
+            <td style="${tableCellStyleNoWrapLeft}"><a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener" style="color:#0019a8;text-decoration:underline;">${a.name}</a></td>
             <td style="${tableCellStyleNoWrap}">${date}</td>
             <td style="${tableCellStyleNoWrap}">${distance}</td>
             <td style="${tableCellStyleNoWrap}">${time}</td>
