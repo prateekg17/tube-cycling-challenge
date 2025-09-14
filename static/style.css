@@ -157,7 +157,9 @@ main {
 #table-view {
     margin-bottom: 2em;
     padding-bottom: 0;
-    max-width: 1200px;
+    /* Remove max-width to allow table to fit content */
+    max-width: none;
+    width: 100%;
     position: relative;
     z-index: 5;
 }
@@ -167,6 +169,7 @@ main {
     border-collapse: collapse;
     background: #fff;
     margin: 0 auto;
+    table-layout: auto;
 }
 #table-view table td, #table-view table th {
     font-weight: normal;
@@ -176,6 +179,26 @@ main {
 }
 #table-view table th {
     font-weight: bold;
+    white-space: nowrap;
+}
+#table-view table th.elevation-col, #table-view table td.elevation-col {
+    min-width: 110px;
+    width: 110px;
+}
+#table-view table th.distance-col, #table-view table td.distance-col {
+    min-width: 100px;
+}
+#table-view table th.time-col, #table-view table td.time-col {
+    min-width: 90px;
+}
+#table-view table th.speed-col, #table-view table td.speed-col {
+    min-width: 90px;
+}
+#table-view table th.ride-name-col, #table-view table td.ride-name-col {
+    min-width: 180px;
+}
+#table-view table th.date-col, #table-view table td.date-col {
+    min-width: 110px;
 }
 footer {
     position: relative;
@@ -272,4 +295,11 @@ body:not(.has-content) footer {
         padding: 0 0.5em;
     }
     .follow-strava img { height: 30px; }
+    #table-view {
+        max-width: 100vw;
+        overflow-x: auto;
+    }
+    #table-view table {
+        min-width: 600px;
+    }
 }

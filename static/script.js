@@ -201,12 +201,12 @@ function renderTableView() {
         <thead>
             <tr style="background:#e6f6fb;">
                 <th style="${tableCellStyle}">#</th>
-                <th style="${tableCellStyleLeft}">Ride Name</th>
-                <th id="sort-date" ${getSortableColumnProps('date')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">📅 Date ${getSortIcon('date')}</th>
-                <th id="sort-distance" ${getSortableColumnProps('distance')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
-                <th id="sort-time" ${getSortableColumnProps('time')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
-                <th id="sort-speed" ${getSortableColumnProps('speed')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
-                <th id="sort-elevation" ${getSortableColumnProps('elevation')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
+                <th class="ride-name-col" style="${tableCellStyleLeft}">Ride Name</th>
+                <th class="date-col" id="sort-date" ${getSortableColumnProps('date')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">📅 Date ${getSortIcon('date')}</th>
+                <th class="distance-col" id="sort-distance" ${getSortableColumnProps('distance')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
+                <th class="time-col" id="sort-time" ${getSortableColumnProps('time')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
+                <th class="speed-col" id="sort-speed" ${getSortableColumnProps('speed')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
+                <th class="elevation-col" id="sort-elevation" ${getSortableColumnProps('elevation')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
             </tr>
         </thead>
     `;
@@ -216,12 +216,12 @@ function renderTableView() {
         const { distance, time, speed, elevation, date } = formatActivityMeta(a);
         return `<tr>
             <td style="${tableCellStyle}">${i + 1}</td>
-            <td style="${tableCellStyleNoWrapLeft}"><a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener" style="color:#0019a8;text-decoration:underline;">${a.name}</a></td>
-            <td style="${tableCellStyleNoWrap}">${date}</td>
-            <td style="${tableCellStyleNoWrap}">${distance}</td>
-            <td style="${tableCellStyleNoWrap}">${time}</td>
-            <td style="${tableCellStyleNoWrap}">${speed}</td>
-            <td style="${tableCellStyleNoWrap}">${elevation}</td>
+            <td class="ride-name-col" style="${tableCellStyleNoWrapLeft}"><a href="https://www.strava.com/activities/${a.id}" target="_blank" rel="noopener" style="color:#0019a8;text-decoration:underline;">${a.name}</a></td>
+            <td class="date-col" style="${tableCellStyleNoWrap}">${date}</td>
+            <td class="distance-col" style="${tableCellStyleNoWrap}">${distance}</td>
+            <td class="time-col" style="${tableCellStyleNoWrap}">${time}</td>
+            <td class="speed-col" style="${tableCellStyleNoWrap}">${speed}</td>
+            <td class="elevation-col" style="${tableCellStyleNoWrap}">${elevation}</td>
         </tr>`;
     }).join('');
 
@@ -229,12 +229,12 @@ function renderTableView() {
     const tableFooter = `
         <tr style="background:#f5f5f5;">
             <td style="${tableCellStyle};font-weight:bold;"></td>
-            <td style="${tableCellStyle};font-weight:bold;">Total</td>
-            <td style="${tableCellStyle};font-weight:bold;"></td>
-            <td style="${tableCellStyleNoWrap};font-weight:bold;">${totalDistanceDisplay}</td>
-            <td style="${tableCellStyleNoWrap};font-weight:bold;">${totalTimeDisplay}</td>
-            <td style="${tableCellStyleNoWrap};font-weight:bold;">${avgSpeedDisplay}</td>
-            <td style="${tableCellStyleNoWrap};font-weight:bold;">${totalElevationDisplay}</td>
+            <td class="ride-name-col" style="${tableCellStyle};font-weight:bold;">Total</td>
+            <td class="date-col" style="${tableCellStyle};font-weight:bold;"></td>
+            <td class="distance-col" style="${tableCellStyleNoWrap};font-weight:bold;">${totalDistanceDisplay}</td>
+            <td class="time-col" style="${tableCellStyleNoWrap};font-weight:bold;">${totalTimeDisplay}</td>
+            <td class="speed-col" style="${tableCellStyleNoWrap};font-weight:bold;">${avgSpeedDisplay}</td>
+            <td class="elevation-col" style="${tableCellStyleNoWrap};font-weight:bold;">${totalElevationDisplay}</td>
         </tr>
     `;
 
