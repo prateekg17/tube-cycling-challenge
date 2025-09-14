@@ -15,7 +15,7 @@
     --gray-dark: #444;
     --header-padding: 2em 0 1em 0;
     --road-height: 180px;
-    --road-offset: 100px; /* Offset for road visibility adjustment */
+    --road-offset: 100px;
     --container-max-width: 1600px;
     --card-radius: 16px;
     --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
@@ -69,7 +69,7 @@ main {
 .view-toggle {
     text-align: center;
     margin: 1em 0;
-    display: none; /* Initial state is hidden */
+    display: none;
 }
 #toggle-table-view {
     background: var(--accent-cyan);
@@ -89,13 +89,13 @@ main {
     grid-template-columns: repeat(2, 1fr);
     gap: 2em;
     max-width: var(--container-max-width);
-    margin: 2em auto 0; /* Removed bottom margin */
+    margin: 2em auto 0;
     align-items: stretch;
     position: relative;
     z-index: 5;
 }
 #activities[data-has-road="true"] {
-    margin-bottom: calc(var(--road-height) - var(--road-offset)); /* Adjust space to ensure optimal visibility of activities with road background */
+    margin-bottom: calc(var(--road-height) - var(--road-offset));
 }
 .activity {
     background: #fff;
@@ -108,7 +108,7 @@ main {
     min-height: 120px;
     box-sizing: border-box;
     width: 100%;
-    margin: 0 0 0.5em; /* Reduced bottom margin from 1em to 0.5em */
+    margin: 0 0 0.5em;
 }
 .activity:hover {
     box-shadow: 0 4px 24px rgba(0,0,0,0.15);
@@ -157,7 +157,6 @@ main {
 #table-view {
     margin-bottom: 2em;
     padding-bottom: 0;
-    /* Remove max-width to allow table to fit content */
     max-width: none;
     width: 100%;
     position: relative;
@@ -183,7 +182,6 @@ main {
 }
 #table-view table th.elevation-col, #table-view table td.elevation-col {
     min-width: 110px;
-    width: 110px;
 }
 #table-view table th.distance-col, #table-view table td.distance-col {
     min-width: 100px;
@@ -204,7 +202,7 @@ footer {
     position: relative;
     width: 100%;
     z-index: 1;
-    margin-top: 0; /* Changed from 2em to 0 to reduce space */
+    margin-top: 0;
 }
 .cycle-road-bg {
     position: relative;
@@ -214,7 +212,7 @@ footer {
     z-index: 1;
     pointer-events: none;
 }
-/* For login screen, fix the footer to the bottom */
+
 body:not(.has-content) footer {
     position: fixed;
     bottom: 0;
