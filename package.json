@@ -13,8 +13,8 @@
   "author": "Prateek",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^24.5.2",
-    "typescript": "^5.9.2",
+    "@types/node": "^24.7.0",
+    "typescript": "^5.9.3",
     "vitest": "^3.2.4"
   },
   "dependencies": {
