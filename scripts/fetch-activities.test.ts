@@ -4,8 +4,10 @@ import type {StravaActivity} from './fetch-activities.js';
 let mockFetch: ReturnType<typeof vi.fn> | undefined;
 vi.mock('node-fetch', () => ({
     default: (url: string, options?: any) => {
+        // Call as a plain function! Not as a constructor
+        // @ts-ignore
         if (mockFetch) return mockFetch(url, options);
-        return Promise.resolve({ok: true, json: async () => ({})});
+        return Promise.resolve({ ok: true, json: async () => ({}) });
     }
 }));
 
