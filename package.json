@@ -15,7 +15,7 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.13"
+    "vitest": "^4.0.15"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
