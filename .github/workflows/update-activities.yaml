@@ -44,7 +44,7 @@ jobs:
         run: npm run fetch-activities
         
       - name: Upload site artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: site-static
           path: static
@@ -60,7 +60,7 @@ jobs:
         uses: actions/configure-pages@v5
         
       - name: Download site artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: site-static
           path: static
