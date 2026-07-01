@@ -174,7 +174,6 @@ function renderTableView() {
     elements.tableView.style.overflowY = 'visible';
     elements.tableView.style.maxHeight = 'none';
     elements.tableView.style.paddingBottom = '0';
-    elements.tableView.style.marginTop = '-1em';
     // Remove the bottom margin since road is now relative
     elements.tableView.style.marginLeft = 'auto';
     elements.tableView.style.marginRight = 'auto';
@@ -240,9 +239,9 @@ function renderTableView() {
 
     // Combine all parts into final HTML - UPDATED TO CENTER THE TABLE CONTENT
     elements.tableView.innerHTML = `
-        <div style="position:relative;margin:0 auto;width:100%;z-index:5;">
-            <div style="overflow-x:auto;position:relative;z-index:5;">
-                <table style="width:100%;border-collapse:collapse;background:#fff;margin:0 auto;position:relative;z-index:5;">
+        <div style="margin:0 auto;width:100%;">
+            <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;background:#fff;margin:0 auto;">
                     ${tableHeader}
                     <tbody>
                         ${tableRows}
