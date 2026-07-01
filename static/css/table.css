@@ -1,0 +1,130 @@
+/*
+ * table.css
+ * Sortable table view and totals row.
+ * Note: script.js applies inline styles to many table elements. Where needed,
+ * !important overrides inline styles without modifying script.js.
+ */
+
+#table-view {
+    margin: 1.5rem 0 2rem;
+    max-width: var(--container-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: auto;
+}
+
+#table-view[hidden] {
+    display: none !important;
+}
+
+/* Wrapper divs injected by script.js */
+#table-view > div,
+#table-view > div > div {
+    background: var(--bg-primary) !important;
+}
+
+#table-view table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-primary) !important;
+    margin: 0 auto;
+    table-layout: auto;
+}
+
+/* Header row - override inline background set by script.js */
+#table-view table thead tr {
+    background: var(--bg-surface) !important;
+}
+
+#table-view table th {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-primary) !important;
+    background: var(--bg-surface) !important;
+    padding: 0.75rem 0.75rem !important;
+    border: 1px solid var(--border) !important;
+    text-align: left;
+    white-space: nowrap;
+    cursor: default;
+    user-select: none;
+}
+
+#table-view table th[role="button"] {
+    cursor: pointer;
+}
+
+#table-view table th[role="button"]:hover {
+    background: var(--bg-surface-hover) !important;
+}
+
+/* Body rows */
+#table-view table td {
+    font-size: 0.85rem;
+    color: var(--text-primary) !important;
+    background: transparent !important;
+    padding: 0.65rem 0.75rem !important;
+    border: 1px solid var(--border) !important;
+    white-space: nowrap;
+    text-align: center;
+}
+
+#table-view table td.ride-name-col {
+    text-align: left;
+}
+
+/* Alternating row tint */
+#table-view table tbody tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Ride name links */
+#table-view table td.ride-name-col a {
+    color: var(--accent-cyan) !important;
+    text-decoration: none;
+}
+
+#table-view table td.ride-name-col a:hover {
+    text-decoration: underline;
+}
+
+/* Totals row - last row in tbody, override inline background */
+#table-view table tbody tr:last-child td {
+    background: var(--bg-surface) !important;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    border-left: none !important;
+}
+
+#table-view table tbody tr:last-child td:first-child {
+    border-left: 3px solid var(--accent-orange) !important;
+}
+
+/* Column min-widths - preserved from original */
+#table-view table th.ride-name-col,
+#table-view table td.ride-name-col { min-width: 180px; }
+#table-view table th.date-col,
+#table-view table td.date-col      { min-width: 110px; }
+#table-view table th.distance-col,
+#table-view table td.distance-col  { min-width: 100px; }
+#table-view table th.time-col,
+#table-view table td.time-col      { min-width: 90px; }
+#table-view table th.speed-col,
+#table-view table td.speed-col     { min-width: 90px; }
+#table-view table th.elevation-col,
+#table-view table td.elevation-col { min-width: 110px; }
+
+
+/* Centre-align sortable column headers; Ride Name stays left-aligned */
+#table-view table th.date-col,
+#table-view table th.distance-col,
+#table-view table th.time-col,
+#table-view table th.speed-col,
+#table-view table th.elevation-col {
+    text-align: center;
+}
+@media (max-width: 700px) {
+    #table-view {
+        padding: 0 0.5rem;
+    }
+}

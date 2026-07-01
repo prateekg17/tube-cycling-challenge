@@ -2,42 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Strava Terminus Activities</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prateek's Challenges</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@300;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
-    <header class="tfl-header">
-        <div class="tfl-header-content">
-            <div class="tfl-logos-title">
-                <div class="tfl-logos">
-                    <!-- Replaced inline SVG with actual Underground logo image -->
-                    <div class="tfl-logo-wrapper">
-                        <img src="underground-tube-logo.png" alt="Transport for London Logo" class="tfl-logo-img" />
-                    </div>
-                    <!-- Cycle image in header wrapped for consistent styling -->
-                    <div class="cycle-logo-wrapper">
-                        <img src="cycle.png" alt="Cycle" class="header-cycle-img" />
-                    </div>
-                </div>
-                <h1>Prateek's Tube Challenge</h1>
-            </div>
+    <header class="site-header">
+        <div class="site-header-content">
+            <h1 class="site-title">Prateek's Challenges</h1>
             <a class="follow-strava" href="https://www.strava.com/athletes/111956132" target="_blank" rel="noopener noreferrer" aria-label="Follow me on Strava">
                 <img src="follow-me-on-strava.png" alt="Follow me on Strava" />
             </a>
         </div>
-        <div class="tfl-line"></div>
     </header>
+    <nav class="challenge-tabs">
+        <div class="challenge-tabs-list">
+            <button type="button" class="challenge-tab active">Tube Terminus Challenge</button>
+        </div>
+        <span class="view-toggle"><button id="toggle-table-view"></button></span>
+    </nav>
     <main>
-        <nav class="view-toggle">
-            <button id="toggle-table-view"></button>
-        </nav>
         <section id="activities" style="margin-top:2em;"></section>
         <section id="table-view" style="margin-top:2em;"></section>
     </main>
-    <footer>
-        <div class="cycle-road-bg">
-            <div class="cycle-road"></div>
-            <div class="cycle-road-markings" id="cycle-road-markings"></div>
+    <footer class="site-footer">
+        <div class="site-footer-content">
+            <span class="site-footer-attribution">Built by Prateek</span>
+            <a class="follow-strava" href="https://www.strava.com/athletes/111956132" target="_blank" rel="noopener noreferrer">
+                Follow me on Strava
+            </a>
         </div>
     </footer>
     <script src="script.js"></script>

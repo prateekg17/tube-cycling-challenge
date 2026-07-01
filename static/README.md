@@ -5,7 +5,7 @@ This directory contains the static site for the Tube Cycling Challenge.
 ## Files
 - `index.html` - Main page
 - `script.js` - Frontend logic
-- `style.css` - Styling
+- `css/` - CSS modules (base, header, cards, table, footer)
 - `activities.json` - Data file (updated weekly by GitHub Action)
 - Other assets (images, etc.)
 
