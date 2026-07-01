@@ -102,12 +102,18 @@
 }
 
 /* Column min-widths - preserved from original */
-.ride-name-col { min-width: 180px; }
-.date-col      { min-width: 110px; }
-.distance-col  { min-width: 100px; }
-.time-col      { min-width: 90px; }
-.speed-col     { min-width: 90px; }
-.elevation-col { min-width: 110px; }
+#table-view table th.ride-name-col,
+#table-view table td.ride-name-col { min-width: 180px; }
+#table-view table th.date-col,
+#table-view table td.date-col      { min-width: 110px; }
+#table-view table th.distance-col,
+#table-view table td.distance-col  { min-width: 100px; }
+#table-view table th.time-col,
+#table-view table td.time-col      { min-width: 90px; }
+#table-view table th.speed-col,
+#table-view table td.speed-col     { min-width: 90px; }
+#table-view table th.elevation-col,
+#table-view table td.elevation-col { min-width: 110px; }
 
 @media (max-width: 700px) {
     #table-view {
