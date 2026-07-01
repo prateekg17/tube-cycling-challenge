@@ -201,11 +201,11 @@ function renderTableView() {
             <tr style="background:#e6f6fb;">
                 <th style="${tableCellStyle}">#</th>
                 <th class="ride-name-col" style="${tableCellStyleLeft}">Ride Name</th>
-                <th class="date-col" id="sort-date" ${getSortableColumnProps('date')} style="${tableCellStyle};cursor:pointer;user-select:none;white-space:nowrap;">📅 Date ${getSortIcon('date')}</th>
-                <th class="distance-col" id="sort-distance" ${getSortableColumnProps('distance')} style="${tableCellStyle};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
-                <th class="time-col" id="sort-time" ${getSortableColumnProps('time')} style="${tableCellStyle};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
-                <th class="speed-col" id="sort-speed" ${getSortableColumnProps('speed')} style="${tableCellStyle};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
-                <th class="elevation-col" id="sort-elevation" ${getSortableColumnProps('elevation')} style="${tableCellStyle};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
+                <th class="date-col" id="sort-date" ${getSortableColumnProps('date')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">📅 Date ${getSortIcon('date')}</th>
+                <th class="distance-col" id="sort-distance" ${getSortableColumnProps('distance')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">🚴 Distance ${getSortIcon('distance')}</th>
+                <th class="time-col" id="sort-time" ${getSortableColumnProps('time')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⏱️ Time ${getSortIcon('time')}</th>
+                <th class="speed-col" id="sort-speed" ${getSortableColumnProps('speed')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⚡ Speed ${getSortIcon('speed')}</th>
+                <th class="elevation-col" id="sort-elevation" ${getSortableColumnProps('elevation')} style="${tableCellStyleLeft};cursor:pointer;user-select:none;white-space:nowrap;">⛰️ Elevation ${getSortIcon('elevation')}</th>
             </tr>
         </thead>
     `;
@@ -240,7 +240,7 @@ function renderTableView() {
     // Combine all parts into final HTML - UPDATED TO CENTER THE TABLE CONTENT
     elements.tableView.innerHTML = `
         <div style="margin:0 auto;width:100%;">
-            <div style="overflow-x:auto;">
+            <div>
                 <table style="width:100%;border-collapse:collapse;background:#fff;margin:0 auto;">
                     ${tableHeader}
                     <tbody>

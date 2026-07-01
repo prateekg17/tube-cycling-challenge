@@ -7,7 +7,6 @@
 
 #table-view {
     margin: 1.5rem 0 2rem;
-    padding: 0 2rem;
     max-width: var(--container-max-width);
     margin-left: auto;
     margin-right: auto;
@@ -115,6 +114,15 @@
 #table-view table th.elevation-col,
 #table-view table td.elevation-col { min-width: 110px; }
 
+
+/* Centre-align sortable column headers; Ride Name stays left-aligned */
+#table-view table th.date-col,
+#table-view table th.distance-col,
+#table-view table th.time-col,
+#table-view table th.speed-col,
+#table-view table th.elevation-col {
+    text-align: center;
+}
 @media (max-width: 700px) {
     #table-view {
         padding: 0 0.5rem;
