@@ -1,6 +1,8 @@
-# Prateek's Tube Cycling Challenge
+# Prateek's Cycling Challenges
 
-A GitHub Pages static site that displays my cycling activities for a self-made Tube challenge. The site automatically updates weekly with new Strava activities via a scheduled GitHub Action.
+A GitHub Pages static site that tracks personal cycling challenges. The site automatically updates weekly with new Strava activities via a scheduled GitHub Action.
+
+Currently active: cycling to and from all 33 terminus Tube stations on the London Underground network from home.
 
 As part of this Tube challenge, I'm cycling to and from all the terminus Tube stations from my home within the London TfL underground network.
 There are a total of 33 such Tube stations spread across the following lines:
@@ -108,11 +110,10 @@ npx vitest
 
 ## User Interface
 The web UI displays:
-- **Header**: Custom TFL & cycling-themed logos, challenge title, and a Strava follow badge.
+- **Header**: Site title, challenge tab strip (one tab per challenge), and a Strava follow badge.
 - **Toggle View Button**: Switch between card and tabular views.
 - **Card View**: Each activity shows ride name, date, stats, description (if present).
 - **Tabular View**: Sortable columns (name, date, distance, time, speed, elevation) with totals/averages.
-- **Animated Road Markings**: Visual footer elements scaled to activity count.
 - **Empty State Message**: Clear message when no activities match the filter.
 - **View Persistence**: Preferred view stored in `localStorage`.
 
@@ -135,7 +136,7 @@ The web UI displays:
 - `.github/workflows/test.yaml` – PR test CI
 - `scripts/fetch-activities.ts` – Strava fetch & processing (ESM / NodeNext)
 - `scripts/fetch-activities.test.ts` – Unit tests (Vitest, mocked fetch)
-- `static/` – Site assets (`index.html`, `style.css`, `script.js`, `activities.json`, images)
+- `static/` – Site assets (`index.html`, `css/` (five CSS modules), `script.js`, `activities.json`, images)
 - `package.json` – Dependencies & scripts
 - `tsconfig.json` – TypeScript config (ES2022 target, NodeNext resolution)
 
