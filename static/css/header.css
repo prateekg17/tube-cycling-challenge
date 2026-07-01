@@ -41,11 +41,14 @@
     background: var(--accent-orange);
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.15s, box-shadow 0.15s;
     text-decoration: none;
 }
 
-.follow-strava:hover {
+.site-header .follow-strava {
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.site-header .follow-strava:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
@@ -125,6 +128,8 @@
     border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Hides the old <nav class="view-toggle"> wrapper from the pre-redesign index.html.
+   Safe to link only after index.html has been updated to the new dark theme structure. */
 .view-toggle {
     display: none;
 }
