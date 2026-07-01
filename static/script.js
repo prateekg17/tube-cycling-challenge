@@ -16,8 +16,6 @@ const tableCellStyleNoWrap = "padding:8px;border:1px solid #ccc;text-align:cente
 const tableCellStyleNoWrapLeft = "padding:8px;border:1px solid #ccc;text-align:left;white-space:nowrap;";
 
 // Application constants
-const ROAD_THRESHOLD_PX = 10; // Threshold in pixels for road visibility detection
-
 // Cache DOM elements
 const elements = {
   toggleBtn: document.getElementById('toggle-table-view'),
@@ -26,23 +24,6 @@ const elements = {
   viewToggle: document.querySelector('.view-toggle')
 };
 
-// Dynamically adjust padding if road is visible
-function adjustActivitiesPadding() {
-    if (!elements.activities) return;
-    const road = document.querySelector('.cycle-road-bg');
-    if (!road) return;
-    // Check if road is visible in viewport
-    const rect = elements.activities.getBoundingClientRect();
-    const roadRect = road.getBoundingClientRect();
-    // Only add extra padding if needed - reduce the threshold to minimize extra space
-    if (rect.bottom > roadRect.top - ROAD_THRESHOLD_PX) {
-        elements.activities.setAttribute('data-has-road', 'true');
-    } else {
-        elements.activities.removeAttribute('data-has-road');
-    }
-}
-window.addEventListener('resize', adjustActivitiesPadding);
-// Call after activities are loaded
 /**
  * @type {Activity[]}
  */
@@ -60,7 +41,6 @@ async function fetchActivities() {
     elements.tableView.style.display = 'none';
     elements.activities.innerHTML = '';
 
-    document.body.classList.remove('has-content');
 
     try {
         const res = await fetch('./activities.json');
@@ -78,7 +58,6 @@ async function fetchActivities() {
             return;
         }
 
-        document.body.classList.add('has-content');
         renderCardView(activities);
 
         const viewMode = localStorage.getItem('viewMode');
@@ -95,7 +74,6 @@ async function fetchActivities() {
             tableVisible = false;
         }
 
-        adjustActivitiesPadding();
     } catch (error) {
         console.error('Error loading activities:', error);
         elements.activities.innerHTML = '<p>Error loading activities. Please try again later.</p>';
@@ -298,22 +276,6 @@ function renderCardView(activities) {
     }).join('');
 }
 
-// Ensure road markings are visible on initial load and also on login page
-window.addEventListener('DOMContentLoaded', () => {
-    const markingsContainer = document.getElementById('cycle-road-markings');
-    // Only add default markings if there are no activities
-    const activityCards = document.querySelectorAll('#activities .activity');
-    if (markingsContainer) {
-        markingsContainer.innerHTML = '';
-        if (activityCards.length === 0) {
-            for (let i = 0; i < 5; i++) {
-                const marking = document.createElement('div');
-                marking.className = 'cycle-road-marking';
-                markingsContainer.appendChild(marking);
-            }
-        }
-    }
-});
 
 // Centralize toggle button labels
 const TOGGLE_VIEW_LABELS = {
