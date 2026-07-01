@@ -128,12 +128,6 @@
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Hides the old <nav class="view-toggle"> wrapper from the pre-redesign index.html.
-   Safe to link only after index.html has been updated to the new dark theme structure. */
-.view-toggle {
-    display: none;
-}
-
 @media (max-width: 700px) {
     .site-header-content,
     .challenge-tabs {
