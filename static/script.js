@@ -15,7 +15,6 @@ const tableCellStyleLeft = "padding:8px;border:1px solid #ccc;";
 const tableCellStyleNoWrap = "padding:8px;border:1px solid #ccc;text-align:center;white-space:nowrap;";
 const tableCellStyleNoWrapLeft = "padding:8px;border:1px solid #ccc;text-align:left;white-space:nowrap;";
 
-// Application constants
 // Cache DOM elements
 const elements = {
   toggleBtn: document.getElementById('toggle-table-view'),
@@ -52,7 +51,7 @@ async function fetchActivities() {
         activitiesData = activities;
 
         if (activities.length === 0) {
-            elements.activities.innerHTML = '<p>No activities found for the Tube Cycling Challenge.</p>';
+            elements.activities.innerHTML = '<p>No activities found for this challenge.</p>';
             elements.viewToggle.style.display = 'none';
             elements.activities.style.display = 'grid';
             return;
@@ -254,7 +253,7 @@ function renderTableView() {
  */
 function renderCardView(activities) {
     if (!activities || activities.length === 0) {
-        elements.activities.innerHTML = '<p>No activities found with "Terminus".</p>';
+        elements.activities.innerHTML = '<p>No activities found for this challenge.</p>';
         return;
     }
 
